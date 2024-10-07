@@ -17,8 +17,10 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 // routes
+import adminRouter from "./routes/admin.routes.js"
 
 
-//app.use()
+
+app.use("/admin", adminRouter)
 
 export {app}

@@ -13,8 +13,9 @@ const teacherSchema = new mongoose.Schema(
             trim: true
         },
         subjects : {
-            type: [String],
-            required: true
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "Course"
         },
         contact: {
             type: String,
@@ -27,6 +28,10 @@ const teacherSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true
+        },
+        notice: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Notice"
         }
     }
 )
@@ -34,7 +39,7 @@ const teacherSchema = new mongoose.Schema(
 // Password hashing
 teacherSchema.pre("save", async function(next){
     if(!this.isModified("password")) return next()
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await  bcrypt.hash(this.password, 10)
     next()    
 })
 

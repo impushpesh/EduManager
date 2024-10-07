@@ -1,0 +1,8 @@
+Student-
+    studentLogin- Login for student
+    studentLogout- Logout for student
+    changeCurrentPassword- change password for student
+    checkAttendance- check attendance details of student
+    checkGrades- check grades of student
+    checkCourses- check courses of student
+    pendingFees- pending fees of student

@@ -8,7 +8,8 @@ const adminSchema = new mongoose.Schema(
         adminId: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true,
         },
         name:{
             type: String,
@@ -17,7 +18,8 @@ const adminSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true,
         },
         password: {
             type: String,
@@ -29,7 +31,7 @@ const adminSchema = new mongoose.Schema(
 // Password hashing
 adminSchema.pre("save", async function(next){
     if(!this.isModified("password")) return next()
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await  bcrypt.hash(this.password, 10)
     next()    
 })
 

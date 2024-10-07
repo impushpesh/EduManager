@@ -11,9 +11,9 @@ const attendanceSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        classId: {  
+        courseId: {  
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Class"
+            ref: "Course"
         },
         present: {
             type: Boolean,
@@ -22,4 +22,4 @@ const attendanceSchema = new mongoose.Schema(
     }
 )
 
-export default mongoose.model("Attendance", attendanceSchema);
+export const Attendance =  mongoose.model("Attendance", attendanceSchema);

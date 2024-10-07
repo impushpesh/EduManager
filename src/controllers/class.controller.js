@@ -1,0 +1,3 @@
+/*
+common controller for admin and teacher 
+*/

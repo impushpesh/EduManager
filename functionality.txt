@@ -5,3 +5,6 @@ user control-
 view their details
 view classes
 view attendance
+
+student can download academic report
+profile picture for students

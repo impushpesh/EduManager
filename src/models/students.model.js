@@ -6,7 +6,7 @@ const studentSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        studentId: {
+        SId: {
             type: String,
             required: true,
             unique: true,
@@ -76,6 +76,25 @@ const studentSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true
+        },
+        pendingFees: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        grades: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Grades",
+            default: null
+        },
+        notice: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Notice"
+        },
+        attendance: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Attendance",
+            default: null
         }
     }
 )
@@ -83,7 +102,7 @@ const studentSchema = new mongoose.Schema(
 // Password hashing
 studentSchema.pre("save", async function(next){
     if(!this.isModified("password")) return next()
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()    
 })
 
