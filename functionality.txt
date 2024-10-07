@@ -1,0 +1,7 @@
+user (student, teacher, admin) registration can be done by admin only
+student and teacher can just login to see their details
+
+user control-
+view their details
+view classes
+view attendance
