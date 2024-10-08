@@ -1,5 +1,0 @@
-// TODO: Future functionalities- add time table and grading functionality
-
-// TODO: Set relation between teacher and course and student enrolled in that course
-
-// TODO: Modification routes for students, teacher, courses, class and notices.
