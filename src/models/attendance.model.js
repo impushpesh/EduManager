@@ -2,18 +2,13 @@ import mongoose from "mongoose";
 
 const attendanceSchema = new mongoose.Schema(
     {
-        studentId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Student",
+        SID: {
+            type: String,
             required: true
         },
         date: {
             type: Date,
             required: true
-        },
-        courseId: {  
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Course"
         },
         present: {
             type: Boolean,

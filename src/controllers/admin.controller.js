@@ -185,7 +185,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const admin = await Admin.findById(req.admin?._id);
-  const isValidPassword = await admin.isValidPassword(oldPassword); // Make sure to call the correct method
+  const isValidPassword = await admin.isValidPassword(oldPassword); 
 
   if (!isValidPassword) {
     throw new ApiError(400, "Invalid old password");

@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const gradeSchema = new mongoose.Schema({
-    studentId: {
-        type: mongoose.Schema.Types.ObjectId,
+    SID: {
+        type: String,
         required: true,
         ref: "Student"
     },
-    subjectId: {
+    courseId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Course"
@@ -18,4 +18,4 @@ const gradeSchema = new mongoose.Schema({
     
 })
 
-export const Grades = mongoose.model('Grades', noticeSchema);
+export const Grades = mongoose.model('Grades', gradeSchema);

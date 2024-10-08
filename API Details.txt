@@ -1,5 +1,0 @@
-ADMIN--
-    /admin/register- Register for admin
-    /admin/login- Login for admin
-    /admin/logout- Logout for admin
-    /refreshToken

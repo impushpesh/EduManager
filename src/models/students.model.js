@@ -111,7 +111,7 @@ studentSchema.pre("save", async function(next){
     next()    
 })
 
-// password validation
+// Password validation
 studentSchema.methods.isValidPassword = async function(password){
     return await bcrypt.compare(password, this.password)
 }
@@ -121,7 +121,9 @@ studentSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            studentId: this.studentId,
+            SID: this.SID,
+            name: this.name,
+            email: this.email
         }, 
 
         process.env.ACCESS_TOKEN_SECRET,
@@ -136,7 +138,9 @@ studentSchema.methods.generateRefreshToken = function (){
     return jwt.sign( 
         { 
             _id: this._id,
-            studentId: this.studentId,
+            SID: this.SID,
+            name: this.name,
+            email: this.email
         }, 
 
         process.env.REFRESH_TOKEN_SECRET, 
