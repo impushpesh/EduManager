@@ -24,6 +24,9 @@ const adminSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true
+        },
+        refreshToken: {
+            type: String
         }
     }
 )
@@ -36,13 +39,11 @@ adminSchema.pre("save", async function(next){
 })
 
 // password validation
-
 adminSchema.methods.isValidPassword = async function(password){
     return await bcrypt.compare(password, this.password)
 }
 
 // JWT token generation
-
 adminSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {

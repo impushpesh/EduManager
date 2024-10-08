@@ -5,6 +5,13 @@ const noticeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    noticeId: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+
+    },
     content: {
         type: String,
         required: true

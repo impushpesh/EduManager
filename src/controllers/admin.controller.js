@@ -17,8 +17,8 @@ const generateAccessAndRefreshTokens = async (adminId) => {
 
     admin.refreshToken = refreshToken;
     await admin.save({ validateBeforeSave: false });
-    console.log("Access token generated: " , accessToken)  //! Debugging step (successfully generated)
-    console.log("Refresh token generated: ", refreshToken)  //! Debugging step (successfully generated)
+    //console.log("Access token generated: " , accessToken)  //! Debugging step (successfully generated)
+    //console.log("Refresh token generated: ", refreshToken)  //! Debugging step (successfully generated)
     return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(
@@ -28,6 +28,7 @@ const generateAccessAndRefreshTokens = async (adminId) => {
   }
 };
 
+// ADMIN
 const registerAdmin = asyncHandler(async (req, res) => {
   const { adminId, name, email, password } = req.body;
 
@@ -92,8 +93,8 @@ const adminLogin = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  console.log("Access token under login: ", accessToken); //! Debugging step (successfully generated)
-  console.log("Refresh token under login: ", refreshToken); //! Debugging step (successfully generated)
+  //console.log("Access token under login: ", accessToken); //! Debugging step (successfully generated)
+  //console.log("Refresh token under login: ", refreshToken); //! Debugging step (successfully generated)
 
   return res
     .status(200)
@@ -184,9 +185,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const admin = await Admin.findById(req.admin?._id);
-  const isPasswordCorrect = await admin.isPasswordCorrect(oldPassword); // Make sure to call the correct method
+  const isValidPassword = await admin.isValidPassword(oldPassword); // Make sure to call the correct method
 
-  if (!isPasswordCorrect) {
+  if (!isValidPassword) {
     throw new ApiError(400, "Invalid old password");
   }
 
@@ -198,12 +199,10 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
-// Now CRUD operation only by admin(like adding/removing/modifying student details, teacher details, class, course details)
-
 // STUDENT
 const addStudent = asyncHandler(async (req, res) => {
   const {
-    studentId,
+    SID,
     name,
     gender,
     DOB,
@@ -222,7 +221,7 @@ const addStudent = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (
-    !studentId ||
+    !SID ||
     !name ||
     !gender ||
     !DOB ||
@@ -242,12 +241,12 @@ const addStudent = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are mandatory");
   }
 
-  const existingStudent = await Student.findOne({ studentId });
+  const existingStudent = await Student.findOne({ SID });
   if (existingStudent) {
     throw new ApiError(409, "Student already exists");
   }
   const student = await Student.create({
-    SID: this.studentId,
+    SID,
     name,
     gender,
     DOB,
@@ -270,9 +269,9 @@ const addStudent = asyncHandler(async (req, res) => {
 });
 
 const removeStudent = asyncHandler(async (req, res) => {
-  const { studentId } = req.params;
+  const { SID } = req.params;
 
-  const student = await Student.findByIdAndDelete(studentId);
+  const student = await Student.findOneAndDelete(SID);
   if (!student) {
     throw new ApiError(404, "Student not found");
   }
@@ -282,38 +281,35 @@ const removeStudent = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Student removed successfully"));
 });
 
-// TODO: const modifyStudent = asyncHandler(async (req, res) => {});
-
 // COURSE
 const addCourse = asyncHandler(async (req, res) => {
-    const { courseId, courseName, teachersAssigned, studentsEnrolled } = req.body;
-  
-    if (!courseId || !courseName || !Array.isArray(teachersAssigned)) {
-      throw new ApiError(400, "courseId, courseName, and teachersAssigned are mandatory");
-    }
-  
-    const existingCourse = await Course.findOne({ courseId });
-    if (existingCourse) {
-      throw new ApiError(409, "Course already exists");
-    }
-  
-    const course = await Course.create({
-      courseId,
-      courseName,
-      teachersAssigned: teachersAssigned.length ? teachersAssigned : [], 
-      studentsEnrolled: Array.isArray(studentsEnrolled) ? studentsEnrolled : [], 
-    });
-  
-    return res
-      .status(201)
-      .json(new ApiResponse(201, course, "Course added successfully"));
+  const { courseId, courseName, teachersAssigned = [], studentsEnrolled = [] } = req.body;
+
+  if (!courseId || !courseName) {
+    throw new ApiError(400, "courseId and courseName are mandatory");
+  }
+
+  const existingCourse = await Course.findOne({ courseId });
+  if (existingCourse) {
+    throw new ApiError(409, "Course already exists");
+  }
+
+  const course = await Course.create({
+    courseId,
+    courseName,
+    teachersAssigned: Array.isArray(teachersAssigned) ? teachersAssigned : [], 
+    studentsEnrolled: Array.isArray(studentsEnrolled) ? studentsEnrolled : [], 
   });
-  
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, course, "Course added successfully"));
+}); // TODO: Set relation between teacher and course and student enrolled in that course
 
 const removeCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params;
 
-  const course = await Course.findByIdAndDelete(courseId);
+  const course = await Course.findOneAndDelete(courseId);
   if (!course) {
     throw new ApiError(404, "Course not found");
   }
@@ -321,13 +317,11 @@ const removeCourse = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, {}, "Course removed successfully"));
 });
 
-// TODO: const modifyCourse = asyncHandler(async (req, res) => {});
-
 // TEACHER
 const addTeacher = asyncHandler(async (req, res) => {
-    const { teacherName, teacherId, subjects, contact, department, password } = req.body;
+    const { teacherName, teacherId, contact, department, password } = req.body;
 
-    if (!teacherName || !teacherId || !subjects || !contact || !password) {
+    if (!teacherName || !teacherId  || !contact || !password) {
         throw new ApiError(400, "teacherName, teacherId, subjects, contact, and password are mandatory");
     }
 
@@ -339,7 +333,6 @@ const addTeacher = asyncHandler(async (req, res) => {
     const teacher = await Teacher.create({
         teacherName,
         teacherId,
-        subjects,
         contact,
         department,
         password,
@@ -351,7 +344,7 @@ const addTeacher = asyncHandler(async (req, res) => {
 const removeTeacher = asyncHandler(async (req, res) => {
     const { teacherId } = req.params;
 
-  const teacher = await Teacher.findByIdAndDelete(teacherId);
+  const teacher = await Teacher.findOneAndDelete(teacherId);
   if (!teacher) {
     throw new ApiError(404, "Teacher not found");
   }
@@ -359,15 +352,12 @@ const removeTeacher = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, {}, "Teacher removed successfully"));
 });
 
-// TODO: const modifyTeacher = asyncHandler(async (req, res) => {});
-
 // CLASS
-
 const addClass = asyncHandler(async (req, res) => {
-    const { classId, className, section, students, teachers } = req.body;
+    const { classId, className, section, students= [], teachers= [] } = req.body;
 
-    if (!classId || !className || !section || !Array.isArray(students) || !Array.isArray(teachers)) {
-        throw new ApiError(400, "classId, className, section, students (must be an array), and teachers (must be an array) are mandatory");
+    if (!classId || !className || !section ) {
+        throw new ApiError(400, "classId, className, section are mandatory");
     }
 
     const existingClass = await Class.findOne({ classId });
@@ -386,11 +376,10 @@ const addClass = asyncHandler(async (req, res) => {
     return res.status(201).json(new ApiResponse(201, classItem, "Class added successfully"));
 });
 
-
 const removeClass = asyncHandler(async (req, res) => {
     const { classId } = req.params;
 
-  const classItem = await Class.findByIdAndDelete(classId);
+  const classItem = await Class.findOneAndDelete(classId);
   if (!classItem) {
     throw new ApiError(404, "Class not found");
   }
@@ -398,18 +387,16 @@ const removeClass = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, {}, "Class removed successfully"));
 });
 
-// TODO: const modifyClass = asyncHandler(async (req, res) => {});
-
 // NOTICE
-
 const addNotice = asyncHandler(async (req, res) => {
-    const {title, content} = req.body;
-    if (!title || !content) {
+    const {title, noticeId, content} = req.body;
+    if (!title || !content || !noticeId) {
       throw new ApiError(400, "title and content are mandatory");
     }
 
     const notice = await Notice.create({
       title,
+      noticeId,
       content,
       author: req.admin._id
     });
@@ -422,14 +409,12 @@ const addNotice = asyncHandler(async (req, res) => {
 
 const removeNotice = asyncHandler(async (req, res) => {
     const { noticeId } = req.params;
-    const notice = await Notice.findByIdAndDelete(noticeId);
+    const notice = await Notice.findOneAndDelete(noticeId);
     if (!notice) {
       throw new ApiError(404, "Notice not found");
     }
     return res.status(200).json(new ApiResponse(200, {}, "Notice removed successfully"));
 });
-
-// TODO: const modifyNotice = asyncHandler(async (req, res) => {});
 
 export {
   registerAdmin,
@@ -439,17 +424,12 @@ export {
   changeCurrentPassword,
   addStudent,
   removeStudent,
-  //modifyStudent,
   addCourse,
   removeCourse,
-  //modifyCourse,
   addTeacher,
   removeTeacher,
-  //modifyTeacher,
   addClass,
   removeClass,
-  //modifyClass,
   addNotice,
   removeNotice,
-  //modifyNotice,
 };

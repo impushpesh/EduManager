@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
 const studentSchema = new mongoose.Schema(
     {
@@ -6,7 +8,7 @@ const studentSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        SId: {
+        SID: {
             type: String,
             required: true,
             unique: true,
@@ -95,6 +97,9 @@ const studentSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Attendance",
             default: null
+        },
+        refreshToken: {
+            type: String
         }
     }
 )
@@ -107,17 +112,15 @@ studentSchema.pre("save", async function(next){
 })
 
 // password validation
-
 studentSchema.methods.isValidPassword = async function(password){
     return await bcrypt.compare(password, this.password)
 }
 
 // JWT token generation
-
 studentSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
-            id: this._id,
+            _id: this._id,
             studentId: this.studentId,
         }, 
 

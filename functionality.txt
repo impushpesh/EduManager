@@ -8,3 +8,4 @@ view attendance
 
 student can download academic report
 profile picture for students
+

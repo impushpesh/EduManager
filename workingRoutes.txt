@@ -1,3 +1,0 @@
-ADMIN ROUTES   
-    registerAdmin
-    adminLogin

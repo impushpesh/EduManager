@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 const teacherSchema = new mongoose.Schema(
     {
         teacherName : {
@@ -11,11 +12,6 @@ const teacherSchema = new mongoose.Schema(
             required: true,
             unique: true,
             trim: true
-        },
-        subjects : {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-            ref: "Course"
         },
         contact: {
             type: String,
@@ -32,6 +28,9 @@ const teacherSchema = new mongoose.Schema(
         notice: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Notice"
+        },
+        refreshToken: {
+            type: String
         }
     }
 )
@@ -50,11 +49,10 @@ teacherSchema.methods.isValidPassword = async function(password){
 }
 
 // JWT token generation
-
 teacherSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
-            id: this._id,
+            _id: this._id,
             teacherId: this.teacherId
 
         }, 
@@ -83,5 +81,3 @@ teacherSchema.methods.generateRefreshToken = function (){
 }
 
 export const Teacher =  mongoose.model('Teacher', teacherSchema);
-
-// Future functionalities- add time table and grading functionality

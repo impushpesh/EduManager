@@ -14,7 +14,8 @@ const courseSchema = new mongoose.Schema(
         teachersAssigned: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Teacher"
+                ref: "Teacher",
+                req: true
             }
         ],
         studentsEnrolled: [
