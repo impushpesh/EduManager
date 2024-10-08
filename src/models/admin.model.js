@@ -46,7 +46,7 @@ adminSchema.methods.isValidPassword = async function(password){
 adminSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
-            id: this._id,
+            _id: this._id,
             adminId: this.adminId,
             name: this.name,
             email: this.email

@@ -17,6 +17,8 @@ const generateAccessAndRefreshTokens = async (adminId) => {
 
     admin.refreshToken = refreshToken;
     await admin.save({ validateBeforeSave: false });
+    console.log("Access token generated: " , accessToken)  //! Debugging step (successfully generated)
+    console.log("Refresh token generated: ", refreshToken)  //! Debugging step (successfully generated)
     return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(
@@ -90,8 +92,8 @@ const adminLogin = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  console.log("Access token: ", accessToken);
-  console.log("Refresh token: ", refreshToken);
+  console.log("Access token under login: ", accessToken); //! Debugging step (successfully generated)
+  console.log("Refresh token under login: ", refreshToken); //! Debugging step (successfully generated)
 
   return res
     .status(200)
