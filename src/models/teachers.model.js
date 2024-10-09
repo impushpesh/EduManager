@@ -53,7 +53,8 @@ teacherSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            teacherId: this.teacherId
+            teacherId: this.teacherId,
+            contact: this.contact
 
         }, 
 
@@ -69,7 +70,8 @@ teacherSchema.methods.generateRefreshToken = function (){
     return jwt.sign( 
         { 
             _id: this._id,
-            teacherId: this.teacherId
+            teacherId: this.teacherId,
+            contact: this.contact
         }, 
 
         process.env.REFRESH_TOKEN_SECRET, 

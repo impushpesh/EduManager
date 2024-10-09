@@ -1,0 +1,57 @@
+ADMIN-  
+        /admin/
+        A. BASIC-->
+            1. register-> To register new admin
+            2. login
+            3. logout
+            4.refreshToken
+            5. changePassword
+        
+        B. STUDENT-->
+            1. addStudent
+            2. removeStudent/:SID
+            
+        C. COURSE-->
+            1. addCourse
+            2. removeCourse/:courseId
+        
+        D. TEACHERS-->
+            1. addTeacher
+            2. removeTeacher/:teacherId
+        
+        E. CLASS-->
+            1. addClass
+            2. removeClass/:classId
+
+        F. NOTICE-->
+            1. addNotice
+            2. removeNotice/:noticeId
+
+        G. FETCHING DETAILS-->
+            1. fetch/studentDetails/:SID
+            2. fetch/teacherDetails/:teacherId -> Gives basic details of teacher along with class representing and teaching subject
+            3. fetch/courseDetails/:courseId -> Give details of course
+            4. fetch/classDetails/:classId-> 
+
+TEACHER - 
+        /teacher
+        A. BASIC-->
+            1. login
+            2. logout
+            3. refreshToken
+            4. changePassword
+
+        B. STUDENTS-->
+            1. assignGrades
+            2. markAttendance
+
+        C. FETCHING-->
+            1. viewNotice/:teacherId
+            
+        
+
+
+
+
+
+STUDENT- /student

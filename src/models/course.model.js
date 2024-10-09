@@ -11,16 +11,20 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        HOD: {
+            type:String,
+            ref: "Teacher"
+        },
         teachersAssigned: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: "Teacher",
                 req: true
             }
         ],
         studentsEnrolled: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: "Student"
             }
         ]

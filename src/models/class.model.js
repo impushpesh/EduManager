@@ -11,18 +11,19 @@ const classSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        section: {  
-            type: String
+        representative: {
+            type: String,
+            ref: "Teacher"
         },
         students: [
             { 
-                type: mongoose.Schema.Types.ObjectId, 
+                type: String, 
                 ref: "Student" 
             }
         ],
         teachers: [
             { 
-                type: mongoose.Schema.Types.ObjectId, 
+                type: String, 
                 ref: "Teacher" 
             }
         ]

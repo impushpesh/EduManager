@@ -4,10 +4,11 @@ const attendanceSchema = new mongoose.Schema(
     {
         SID: {
             type: String,
-            required: true
+            required: true,
+            ref: "Student"
         },
         date: {
-            type: Date,
+            type: Date, 
             required: true
         },
         present: {

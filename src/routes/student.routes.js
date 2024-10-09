@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-    studentLogin,
+  studentLogin,
   studentLogout,
   refreshAccessToken,
   changeCurrentPassword,
@@ -22,6 +22,6 @@ router.route('/checkAttendance/:SID').get(verifyJWT, checkAttendance)
 router.route('/checkGrades/:SID').get(verifyJWT, checkGrades)
 router.route('/checkCourses/:SID').get(verifyJWT, checkCourses)
 router.route('/checkFees/:SID').get(verifyJWT, pendingFees)
-router.route('/viewNotice/:noticeId').get(verifyJWT, viewNotice)
+router.route('/viewNotice/:SID').get(verifyJWT, viewNotice)
 
 export default router;

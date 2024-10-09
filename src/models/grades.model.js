@@ -7,7 +7,7 @@ const gradeSchema = new mongoose.Schema({
         ref: "Student"
     },
     courseId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true,
         ref: "Course"
     },

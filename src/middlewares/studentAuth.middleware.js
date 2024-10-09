@@ -19,7 +19,6 @@ export const verifyJWT = asyncHandler(async(req,_,next)=>{
         req.student = student
         next()
     } catch (error) {
-        console.log("This is part 2")
         throw new ApiError(401, error?.message || "Invalid access token")
     }
 

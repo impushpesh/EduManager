@@ -25,13 +25,6 @@ const studentSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        rollNo :{
-            type: Number,
-            required: true,
-            unique: true,
-            index: true,
-            trim: true,
-        },
         contactNumber : {
             type: String,
             required: true,
@@ -67,14 +60,6 @@ const studentSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        className : {
-            type: String,
-            required: true
-        },
-        coursesEnrolled: [{   
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Course"
-        }],
         password: {
             type: String,
             required: true

@@ -15,6 +15,10 @@ import {
   removeClass,
   addNotice,
   removeNotice,
+  getStudentDetails,
+  getTeacherDetails,
+  getCourseDetails,
+  getClassDetails
 } from "../controllers/admin.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -47,4 +51,9 @@ router.route('/removeClass/:classId').delete(verifyJWT, removeClass)
 router.route('/addNotice').post(verifyJWT, addNotice) 
 router.route('/removeNotice/:noticeId').delete(verifyJWT, removeNotice) 
 
+// FETCHING routes
+router.route('/fetch/studentDetails/:SID').get(verifyJWT, getStudentDetails)
+router.route('/fetch/teacherDetails/:teacherId').get(verifyJWT, getTeacherDetails)
+router.route('/fetch/courseDetails/:courseId').get(verifyJWT, getCourseDetails)
+router.route('/fetch/classDetails/:classId').get(verifyJWT, getClassDetails)
 export default router;
