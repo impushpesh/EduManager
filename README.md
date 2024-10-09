@@ -112,7 +112,7 @@ The project follows the **RESTful API** design and leverages **Node.js**, **Expr
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/impushpesh/student-management-system.git
+   git clone https://github.com/impushpesh/EduManager.git
 
 2. Navigate into the project directory:
    ```bash
