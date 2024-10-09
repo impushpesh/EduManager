@@ -7,7 +7,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import {Grades} from "../models/grades.model.js"
 import {Class} from "../models/class.model.js"
 import jwt from "jsonwebtoken";
-// TODO: Add a functionality so that Student can download their academic report in pdf format. (will add later on)
 
 const generateAccessAndRefreshToken = async (SID) => {
   try {
@@ -159,7 +158,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const checkAttendance = asyncHandler(async (req, res) => {
-  const { SID } = req.params; // Extract SID from req.params
+  const { SID } = req.params; 
   if (!SID) {
     throw new ApiError(400, "Student Id is required");
   }

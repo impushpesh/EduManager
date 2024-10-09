@@ -1,7 +1,7 @@
 ADMIN-  
         /admin/
         A. BASIC-->
-            1. register-> To register new admin
+            1. register
             2. login
             3. logout
             4.refreshToken
@@ -29,9 +29,9 @@ ADMIN-
 
         G. FETCHING DETAILS-->
             1. fetch/studentDetails/:SID
-            2. fetch/teacherDetails/:teacherId -> Gives basic details of teacher along with class representing and teaching subject
-            3. fetch/courseDetails/:courseId -> Give details of course
-            4. fetch/classDetails/:classId-> 
+            2. fetch/teacherDetails/:teacherId 
+            3. fetch/courseDetails/:courseId 
+            4. fetch/classDetails/:classId 
 
 TEACHER - 
         /teacher

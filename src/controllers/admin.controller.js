@@ -310,7 +310,7 @@ const addCourse = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(201, course, "Course added successfully"));
-}); // TODO: Set relation between teacher and course and student enrolled in that course
+}); 
 
 const removeCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;

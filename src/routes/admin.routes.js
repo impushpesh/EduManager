@@ -36,7 +36,7 @@ router.route('/addStudent').post(verifyJWT, addStudent)
 router.route('/removeStudent/:SID').delete(verifyJWT, removeStudent) 
 
 // COURSE routes
-router.route('/addCourse').post(verifyJWT, addCourse) // TODO: Set relation between teacher and course and student enrolled in that course
+router.route('/addCourse').post(verifyJWT, addCourse) 
 router.route('/removeCourse/:courseId').delete(verifyJWT, removeCourse) 
 
 // TEACHERS routes

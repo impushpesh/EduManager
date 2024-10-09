@@ -143,7 +143,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
-// STUDENTS 
+// STUDENTS
 const assignGrades = asyncHandler(async (req, res) => {
   const { SID, courseId, grade } = req.body;
 
