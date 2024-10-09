@@ -48,10 +48,15 @@ TEACHER -
         C. FETCHING-->
             1. viewNotice/:teacherId
             
-        
-
-
-
-
-
 STUDENT- /student
+        A. BASIC-->
+            1. login
+            2. logout
+            3. refreshToken
+            4. changePassword
+
+        B. FETCHING-->
+            1. checkAttendance/:SID
+            2. checkGrades/:SID
+            3. checkFees/:SID
+            4. viewNotice/:SID

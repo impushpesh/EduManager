@@ -5,6 +5,7 @@ import { Attendance } from "../models/attendance.model.js";
 import { Notice } from "../models/notice.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import {Grades} from "../models/grades.model.js"
+import {Class} from "../models/class.model.js"
 import jwt from "jsonwebtoken";
 // TODO: Add a functionality so that Student can download their academic report in pdf format. (will add later on)
 
@@ -187,73 +188,23 @@ const checkGrades = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Student ID is required");
   }
 
-  const student = await Student.findOne({ SID }).populate(
-    "coursesEnrolled",
-    "courseName"
-  );
+  const student = await Student.findOne({ SID })
   if (!student) {
     throw new ApiError(404, "Student not found");
   }
 
   const grades = await Grades.find({ SID })
-    .populate("courseId", "courseName")
-    .lean();
 
   if (!grades.length) {
     throw new ApiError(404, "No grades found for this student");
   }
 
-  const formattedGrades = grades.map((grade) => ({
-    courseName: grade.courseId.courseName,
-    grade: grade.grade,
-  }));
-
   return res
     .status(200)
-    .json(new ApiResponse(200, formattedGrades, "Grades fetched successfully"));
+    .json(new ApiResponse(200, grades, "Grades fetched successfully"));
 });
 
 
-const checkCourses = asyncHandler(async (req, res) => {
-  const { SID } = req.params;
-
-  if (!SID) {
-    throw new ApiError(400, "Student ID is required");
-  }
-
-  const student = await Student.findOne({SID}).populate(
-    "coursesEnrolled",
-    "courseName"
-  );
-
-  if (!student) {
-    throw new ApiError(404, "Student not found");
-  }
-
-  const enrolledCourses = student.coursesEnrolled;
-
-  if (!enrolledCourses.length) {
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(200, { enrolledCourses: [] }, "No courses enrolled")
-      );
-  }
-
-  const coursesList = enrolledCourses.map((course) => ({
-    courseName: course.courseName,
-  }));
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { enrolledCourses: coursesList },
-        "Courses fetched successfully"
-      )
-    );
-});
 
 const pendingFees = asyncHandler(async (req, res) => {
   const { SID } = req.params;
@@ -291,6 +242,26 @@ const viewNotice = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, notices, "Notices fetched successfully"));
 });
 
+const getFullDetails = asyncHandler(async (req, res) => {
+  const { SID } = req.params;
+  const student = await Student.findOne({ SID });
+  if (!student) {
+    throw new ApiError(404, "Student not found");
+  }
+  const attendance = await Attendance.findOne({ SID });
+  const grade = await Grades.findOne({ SID });
+  const currentClass = await Class.findOne({ students: SID })
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { student, attendance, grade, currentClass },
+        "Student details fetched successfully"
+      )
+    );
+});
+
 export {
   studentLogin,
   studentLogout,
@@ -298,7 +269,7 @@ export {
   changeCurrentPassword,
   checkAttendance,
   checkGrades,
-  checkCourses,
   pendingFees,
   viewNotice,
+  getFullDetails
 };
